@@ -12,6 +12,7 @@ declare module 'next-auth' {
       email?: string | null;
       image?: string | null;
       role?: 'MANAGER' | 'SHOP' | 'USER';
+      points?: number;
     } & DefaultSession['user'];
   }
 }
@@ -19,6 +20,7 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     role?: 'MANAGER' | 'SHOP' | 'USER';
+    points?: number;
   }
 }
 
@@ -29,16 +31,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60,
   },
+  pages: {
+    signIn: '/auth/login',
+  },
   providers: [
     Credentials({
       credentials: {
         email: { label: 'Email' },
-        password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
-        const { email, password } = credentials;
+        const { email } = credentials;
 
-        if (!email || !password) {
+        if (!email) {
           throw new Error('Enter credentials');
         }
 
@@ -56,11 +60,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     jwt({ token, user }: { token: JWT; user: Session['user'] }) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+        token.points = user.points;
+      }
+
       return token;
     },
     session({ session, token }) {
       session.user.role = token.role;
+      session.user.points = token.points;
 
       return session;
     },
