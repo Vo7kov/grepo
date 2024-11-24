@@ -12,14 +12,9 @@ type Store = {
 };
 
 const SupportedStores: FC = async () => {
-  const stores = await axios
-    .get<Store[]>(`${process.env.NEXT_PUBLIC_API}/stores`)
-    .then((data) => data)
-    .catch(() => console.log('err'));
-
-  if (!Array.isArray(stores)) {
-    return <p>Loading...</p>;
-  }
+  const { data: stores } = await axios.get<Store[]>(
+    `${process.env.NEXT_PUBLIC_API}/stores`,
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-green-50">
