@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="pl">
+    <html lang="en">
       <body className="antialiased">
         <SessionProvider>{children}</SessionProvider>
       </body>

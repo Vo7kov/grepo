@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { auth } from '@/auth';
 import { QRCodeSVG } from 'qrcode.react';
 
+import { Points } from '@/components/Points/Points';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const UserDashboard: FC = async () => {
@@ -26,9 +27,10 @@ const UserDashboard: FC = async () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center space-y-4">
-            <div className="text-green-800 text-4xl font-bold">
-              {session?.user.points}
-            </div>
+            <Points
+              email={session?.user.email as string}
+              points={session?.user.points as number}
+            />
             <QRCodeSVG
               value={qrValue}
               size={256}
