@@ -1,9 +1,16 @@
 import { FC } from 'react';
 
-import { Input } from '@/components/ui/input';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
-const Home: FC = () => {
-  return <Input className="w-10 bg-red-800" />;
+const Home: FC = async () => {
+  const session = await auth();
+
+  if (session?.user) {
+    return redirect('/app/dashboard');
+  }
+
+  return redirect('/auth/login');
 };
 
 export default Home;

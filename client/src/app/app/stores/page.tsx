@@ -1,49 +1,20 @@
 import { FC } from 'react';
 
+import axios from 'axios';
 import Image from 'next/image';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const SupportedStores: FC = () => {
-  const stores = [
-    {
-      name: 'Zabka',
-      logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROjwwJq2Xlc1xmncvh0RieNLsuV1EqJTmmgA&s',
-    },
-    {
-      name: 'Lidl',
-      logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMwuMOpraAIZU_0VSGvKavi6tWOpKFP3AmEQ&s',
-    },
-    { name: 'Zara', logo: 'https://static.cdnlogo.com/logos/z/3/zara.png' },
-    {
-      name: 'H&M',
-      logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSifn7PA-XEOxP0LjD2Sd0HrNS8m2hQaIzFAA&s',
-    },
-    {
-      name: 'IKEA',
-      logo: 'https://w7.pngwing.com/pngs/695/521/png-transparent-comic-book-comics-retail-ikea-coupon-others-thumbnail.png',
-    },
-    {
-      name: 'Carrefour',
-      logo: 'https://images.seeklogo.com/logo-png/2/1/carrefour-logo-png_seeklogo-26550.png?v=638660568250000000',
-    },
-    {
-      name: 'Auchan',
-      logo: 'https://seeklogo.com/images/A/Auchan-logo-1FB47C5456-seeklogo.com.png',
-    },
-    {
-      name: 'Decathlon',
-      logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqVq_kwejkjVLFjbad3ZDqeImfpn1c2_rGoQ&s',
-    },
-    {
-      name: 'MediaMarkt',
-      logo: 'https://logowik.com/content/uploads/images/328_mediamarkt.jpg',
-    },
-    {
-      name: 'Starbucks',
-      logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/1200px-Starbucks_Corporation_Logo_2011.svg.png',
-    },
-  ];
+type Store = {
+  id: string;
+  name: string;
+  image: string;
+};
+
+const SupportedStores: FC = async () => {
+  const { data: stores } = await axios.get<Store[]>(
+    `${process.env.NEXT_PUBLIC_API}/stores`,
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-green-50">
@@ -69,7 +40,7 @@ const SupportedStores: FC = () => {
             </CardHeader>
             <CardContent className="flex justify-center items-center">
               <Image
-                src={store.logo}
+                src={store.image}
                 alt={`${store.name} logo`}
                 width={64}
                 height={64}

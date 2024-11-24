@@ -21,3 +21,9 @@ model User {
 
   points Int @default(0)
 }
+
+model Store {
+  id    String @id @default(cuid())
+  name  String @unique
+  image String
+}
